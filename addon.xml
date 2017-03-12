@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.video.unified.search.lite" version="0.1.2" name="Unified Search Lite" provider-name="vl.maksime">
+<addon id="plugin.video.united.search" version="0.1.3" name="United Search" provider-name="vl.maksime">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.simpleplugin" version="2.1.0"/>
@@ -20,8 +20,8 @@
         <license>GNU GENERAL PUBLIC LICENSE. Version 3, 29 June 2007</license>
         <forum>http://xbmc.ru/forum/showthread.php?t=14278</forum>
         <email>vl.maksime@gmail.com</email>
-        <source>https://github.com/vlmaksime/plugin.video.unified.search.lite</source>
-        <news>v0.1.2 (2017-03-12)[CR]- При поиске добавлен счетчик найденных совпадений[CR]- В результатах поиска добавлен вывод количества записей[CR]- Добавлен раздел "Последний поиск"[CR]- Добавлен раздел "Совместимые дополнения"</news>
+        <source>https://github.com/vlmaksime/plugin.video.united.search</source>
+        <news>v0.1.3 (2017-03-12)[CR]- Переделан механизм поиска. Устранено сообщение об ошибке, возникающее в редких случаях[CR]- Дополнение переименовано в "United Search". Внесены соответствующие изменения в код дополнения</news>
         <assets>
             <icon>icon.png</icon>
             <screenshot>resources\media\screenshot-01.jpg</screenshot>

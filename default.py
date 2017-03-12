@@ -102,7 +102,7 @@ def search( params ):
             path = []
             path.append('plugin://')
             path.append(addon['id'])
-            path.append('/?unified=True&')
+            path.append('/?usearch=True&')
             path.append(addon['us_command'])
             path.append(keyword.decode('utf-8'))
 
@@ -111,10 +111,6 @@ def search( params ):
             listing.extend(make_items(video_list, addon['name']))
 
         progress.close()
-
-        if succeeded and len(listing) == 0:
-            succeeded = False
-            show_info_notification(_('Nothing found!'))
 
         if succeeded:
             with plugin.get_storage('__history__.pcl') as storage:
@@ -130,7 +126,12 @@ def search( params ):
                     history.pop(-1)
                 storage['history'] = history
 
-    execute_addon( 'action=search_results&update=true' )
+        if succeeded and len(listing) == 0:
+            succeeded = False
+            show_info_notification(_('Nothing found!'))
+    if succeeded:
+        execute_addon( 'action=search_results&update=true' )
+
 @plugin.action()
 def search_results( params ):
 
@@ -180,9 +181,9 @@ def supported_addons( params ):
 
     listing = []
     for addon in _supported_addons:
-        status = '[V]' if addon['unified_search'] else '[X]'
+        status = '[V]' if addon['united_search'] else '[X]'
         label = '[B]%s[/B] %s' % (status, addon['name'])
-        change_status_title = _('Disable') if addon['unified_search'] else _('Enable')
+        change_status_title = _('Disable') if addon['united_search'] else _('Enable')
 
         context_menu = [(_('Settings'), 'RunPlugin(%s)' % plugin.get_url(action='addon_open_settings', id=addon['id'])),
                         (change_status_title, 'RunPlugin(%s)' % plugin.get_url(action='addon_change_status', id=addon['id']))]
@@ -206,8 +207,8 @@ def addon_open_settings( params ):
 @plugin.action()
 def addon_change_status( params ):
     addon_object = xbmcaddon.Addon(params['id'])
-    unified_search = addon_object.getSetting('unified_search')
-    addon_object.setSetting('unified_search', 'false' if unified_search == 'true' else 'true')
+    united_search = addon_object.getSetting('united_search')
+    addon_object.setSetting('united_search', 'false' if united_search == 'true' else 'true')
 
     execute_addon( 'action=supported_addons&update=true' )
 
@@ -264,8 +265,8 @@ def load_supported_addons( all_supported=False ):
     enabled_addons = get_addons()
     for addon in enabled_addons:
         addon_object = xbmcaddon.Addon(addon['addonid'])
-        unified_search = addon_object.getSetting('unified_search')
-        if unified_search == 'true' or all_supported and unified_search == 'false':
+        united_search = addon_object.getSetting('united_search')
+        if united_search == 'true' or all_supported and united_search == 'false':
             us_command = addon_object.getSetting('us_command')
             if not us_command:
                 us_command = 'mode=search&keyword='
@@ -273,7 +274,7 @@ def load_supported_addons( all_supported=False ):
             addon_info = {'id':             addon['addonid'],
                           'name':           addon['name'],
                           'us_command':     us_command,
-                          'unified_search': (unified_search == 'true'),
+                          'united_search': (united_search == 'true'),
                           'description':    addon['description'],
                           'thumbnail':      addon['thumbnail'],
                           'fanart':         addon['fanart']}
