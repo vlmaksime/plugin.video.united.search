@@ -5,6 +5,7 @@
 import xbmc
 import xbmcgui
 import xbmcaddon
+import xbmcplugin
 import urllib
 import simplejson as json
 
@@ -16,7 +17,7 @@ _ = plugin.initialize_gettext()
 _supported_addons = []
 
 def get_categories():
-    categories = [ {'action': 'search',           'label': _('New Search'), 'is_folder': False},
+    categories = [ {'action': 'search',           'label': _('New Search')},
                    {'action': 'search_results',   'label': _('Last Search')},
                    {'action': 'search_history',   'label': _('Search History')},
                    {'action': 'supported_addons', 'label': _('Supported Add-ons')} ]
@@ -31,9 +32,9 @@ def make_items( video_list, addon_name ):
 
     for video_item in video_list:
         item_info = {'label': '%s [%s]' % (video_item['label'], addon_name),
-                     'info':  { 'video': {#'year':      video_item.get('year', 0),
-                                          #'title':     video.get('title'),
-                                          'genre':     video_item.get('genres', ''),
+                     'info':  { 'video': {'year':      video_item.get('year', 0),
+                                          'title':     video_item.get('title',''),
+                                          'genre':     video_item.get('genre', ''),
                                           'rating':    video_item.get('rating', 0),
                                           'duration':  video_item.get('runtime', ''),
                                           'plot':      video_item.get('plot', '')} },
@@ -60,20 +61,16 @@ def root( params ):
             'label': category['label'],
             'url': url,
             'icon': plugin.icon,
-            'fanart': plugin.fanart,
-            'is_folder': category.get('is_folder', True)
+            'fanart': plugin.fanart
         })
 
     return plugin.create_listing(listing, content='files')
 
 @plugin.action()
 def search( params ):
-
-    keyword = params.get('keyword','')
-    item = params.get('item')
-
     succeeded = False
 
+    keyword = params.get('keyword', '')
     if keyword == '':
         kbd = xbmc.Keyboard()
         kbd.setDefault('')
@@ -81,7 +78,6 @@ def search( params ):
         kbd.doModal()
         if kbd.isConfirmed():
             keyword = kbd.getText()
-
 
     listing = []
     if keyword != '':
@@ -97,7 +93,7 @@ def search( params ):
             result_string = '%s: %d' % (_('Search results'), len(listing))
             progress.update(100 * i / total_addons, line2=addon['name'], line3=result_string)
             if (progress.iscanceled()):
-                succeeded = False
+                #succeeded = False
                 break
 
             path = []
@@ -105,7 +101,6 @@ def search( params ):
             path.append(addon['id'])
             path.append('/?usearch=True&')
             path.append(addon['us_command'])
-            #path.append(keyword.decode('utf-8'))
             path.append(urllib.quote(keyword))
 
             directory = ''.join(path)
@@ -120,10 +115,7 @@ def search( params ):
                 history = storage.get('history', [])
 
                 item_content = {'keyword': keyword, 'listing': listing}
-                if item:
-                    history[int(item)] = item_content
-                else:
-                    history.insert(0, item_content)
+                history.insert(0, item_content)
 
                 if len(history) > plugin.history_length:
                     history.pop(-1)
@@ -132,14 +124,17 @@ def search( params ):
         if succeeded and len(listing) == 0:
             succeeded = False
             show_info_notification(_('Nothing found!'))
+
     if succeeded:
-        execute_addon( 'action=search_results&update=true' )
+        url = plugin.get_url(action='search_results', item=0)
+        xbmc.executebuiltin('Container.Update("%s")' % url)
+    else:
+        return plugin.create_listing(listing, content='files', succeeded=succeeded)
 
 @plugin.action()
 def search_results( params ):
 
     item = int(params.get('item', '0'))
-    update_listing = (params.get('update') == 'true')
 
     listing = []
 
@@ -149,12 +144,11 @@ def search_results( params ):
     if len(history) >= (item + 1):
         item_content = history[item]
 
-        #listing.append({'label': _('Search Again...'),
-        #                'url':   plugin.get_url(action='search', keyword=item_content['keyword'], item=item)})
-
         listing.extend(item_content.get('listing', []))
 
-    return plugin.create_listing(listing, content='files', sort_methods=(1,2), update_listing=update_listing)
+    sort_methods = [xbmcplugin.SORT_METHOD_LABEL_IGNORE_FOLDERS,
+                    xbmcplugin.SORT_METHOD_VIDEO_YEAR]
+    return plugin.create_listing(listing, content='movies', sort_methods=sort_methods)
 
 @plugin.action()
 def search_history( params ):
@@ -180,27 +174,28 @@ def search_history( params ):
 def supported_addons( params ):
     load_supported_addons(True)
 
-    update_listing = (params.get('update') == 'true')
-
     listing = []
     for addon in _supported_addons:
         status = '[V]' if addon['united_search'] else '[X]'
         label = '[B]%s[/B] %s' % (status, addon['name'])
-        change_status_title = _('Disable') if addon['united_search'] else _('Enable')
+        #change_status_title = _('Disable') if addon['united_search'] else _('Enable')
 
-        context_menu = [(_('Settings'), 'RunPlugin(%s)' % plugin.get_url(action='addon_open_settings', id=addon['id'])),
-                        (change_status_title, 'RunPlugin(%s)' % plugin.get_url(action='addon_change_status', id=addon['id']))]
+        #context_menu = [(_('Settings'), 'RunPlugin(%s)' % plugin.get_url(action='addon_open_settings', id=addon['id'])),
+        #                (change_status_title, 'RunPlugin(%s)' % plugin.get_url(action='addon_change_status', id=addon['id'])),]
         item_info = {'label':       label,
-                     'sorttitle':   addon['name'],
-                     'info':        { 'video': {'plot': addon['description']} },
-                     'url':         'plugin://%s/' % (addon['id']),
-                     'context_menu': context_menu,
-                     'replaceItems': True,
+                     'info':        { 'video': {'plot':      addon['description'],
+                                                'sorttitle': addon['name']} },
+                     'url':         plugin.get_url(action='addon_change_status', id=addon['id']),
+                     'is_folder':   False,
+                     'is_playable': False,
+                     #'context_menu': context_menu,
+                     'replace_items': True,
                      'fanart':       addon['fanart'],
                      'thumb':        addon['thumbnail']}
         listing.append(item_info)
 
-    return plugin.create_listing(listing, content='files', sort_methods=(26,27), update_listing=update_listing)
+    sort_methods = [xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE]
+    return plugin.create_listing(listing, content='files', sort_methods=sort_methods)
 
 @plugin.action()
 def addon_open_settings( params ):
@@ -211,19 +206,10 @@ def addon_open_settings( params ):
 def addon_change_status( params ):
     addon_object = xbmcaddon.Addon(params['id'])
     united_search = addon_object.getSetting('united_search')
+    
     addon_object.setSetting('united_search', 'false' if united_search == 'true' else 'true')
 
-    execute_addon( 'action=supported_addons&update=true' )
-
-def execute_addon( params ):
-    request = {'jsonrpc': '2.0',
-               'method': 'Addons.ExecuteAddon',
-               'params': {'addonid': plugin.id,
-                          'params': params,
-                          'wait': False},
-                'id': 1
-               }
-    response = xbmc.executeJSONRPC(json.dumps(request))
+    xbmc.executebuiltin('Container.Refresh')
 
 def get_directory( directory ):
     request = {'jsonrpc': '2.0',
