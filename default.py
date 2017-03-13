@@ -5,6 +5,7 @@
 import xbmc
 import xbmcgui
 import xbmcaddon
+import urllib
 import simplejson as json
 
 from simpleplugin import Plugin
@@ -104,9 +105,11 @@ def search( params ):
             path.append(addon['id'])
             path.append('/?usearch=True&')
             path.append(addon['us_command'])
-            path.append(keyword.decode('utf-8'))
+            #path.append(keyword.decode('utf-8'))
+            path.append(urllib.quote(keyword))
 
             directory = ''.join(path)
+            
             video_list = get_directory(directory)
             listing.extend(make_items(video_list, addon['name']))
 
