@@ -114,7 +114,7 @@ def search( params ):
             with plugin.get_storage('__history__.pcl') as storage:
                 history = storage.get('history', [])
 
-                item_content = {'keyword': keyword, 'listing': listing}
+                item_content = {'keyword': keyword.decode('utf-8'), 'listing': listing}
                 history.insert(0, item_content)
 
                 if len(history) > plugin.history_length:
