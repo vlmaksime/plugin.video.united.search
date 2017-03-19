@@ -47,13 +47,37 @@ msgid "Settings"
 msgstr "Настройки"
 
 msgctxt "#30009"
-msgid "Enable"
-msgstr "Включить"
+msgid "Add-on name in search result"
+msgstr "Имя дополнения в результате поиска"
 
 msgctxt "#30010"
-msgid "Disable"
-msgstr "Выключить"
+msgid "Repeat Search"
+msgstr "Повторить поиск"
 
 msgctxt "#30011"
 msgid "Last Search"
 msgstr "Последний поиск"
+
+msgctxt "#30012"
+msgid "Delete '(UnifiedSearch)' substring from add-on name"
+msgstr "Удалять подстроку '(UnifiedSearch)' из названия дополнения"
+
+msgctxt "#30013"
+msgid "Add at title"
+msgstr "Добавить к заголовку"
+
+msgctxt "#30014"
+msgid "Add at description"
+msgstr "Добавить в описании"
+
+msgctxt "#30015"
+msgid "Position in title"
+msgstr "Положение в заголовке"
+
+msgctxt "#30016"
+msgid "At the beginning"
+msgstr "В начале"
+
+msgctxt "#30017"
+msgid "At the end"
+msgstr "В конце"

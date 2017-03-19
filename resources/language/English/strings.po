@@ -47,13 +47,37 @@ msgid "Settings"
 msgstr ""
 
 msgctxt "#30009"
-msgid "Enable"
+msgid "Add-on name in search result"
 msgstr ""
 
 msgctxt "#30010"
-msgid "Disable"
+msgid "Repeat Search"
 msgstr ""
 
 msgctxt "#30011"
 msgid "Last Search"
+msgstr ""
+
+msgctxt "#30012"
+msgid "Delete '(UnifiedSearch)' substring from add-on name"
+msgstr ""
+
+msgctxt "#30013"
+msgid "Add at title"
+msgstr ""
+
+msgctxt "#30014"
+msgid "Add at description"
+msgstr ""
+
+msgctxt "#30015"
+msgid "Position in title"
+msgstr ""
+
+msgctxt "#30016"
+msgid "At the beginning"
+msgstr ""
+
+msgctxt "#30017"
+msgid "At the end"
 msgstr ""

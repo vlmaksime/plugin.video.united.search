@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
     <setting label="30005" type="labelenum" id="history_length" values="5|10|15|20|25" default="10" />
+    <setting label="30012" type="bool" id="del_unified_name" default="false" />
+    <setting label="30009" type="lsep"/>
+    <setting label="30013" type="bool" id="add_name_lable" default="true" />
+    <setting label="30015" type="enum" id="add_name_lable_position" lvalues="30016|30017" enable="eq(-1,true)" default="1" />
+    <setting label="30014" type="bool" id="add_name_plot" default="false" />
 </settings>
