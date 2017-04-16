@@ -81,3 +81,31 @@ msgstr ""
 msgctxt "#30017"
 msgid "At the end"
 msgstr ""
+
+msgctxt "#30018"
+msgid "Search with United Search"
+msgstr ""
+
+msgctxt "#30019"
+msgid "Context Search"
+msgstr ""
+
+msgctxt "#30020"
+msgid "Edit before search"
+msgstr ""
+
+msgctxt "#30021"
+msgid "Select Title"
+msgstr ""
+
+msgctxt "#30022"
+msgid "Previous"
+msgstr ""
+
+msgctxt "#30023"
+msgid "Next"
+msgstr ""
+
+msgctxt "#30024"
+msgid "Close"
+msgstr ""

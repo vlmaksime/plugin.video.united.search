@@ -81,3 +81,31 @@ msgstr "В начале"
 msgctxt "#30017"
 msgid "At the end"
 msgstr "В конце"
+
+msgctxt "#30018"
+msgid "Search with United Search"
+msgstr "Искать с United Search"
+
+msgctxt "#30019"
+msgid "Context Search"
+msgstr "Контекстный поиск"
+
+msgctxt "#30020"
+msgid "Edit before search"
+msgstr "Редактировать перед поиском"
+
+msgctxt "#30021"
+msgid "Select Title"
+msgstr "Выберите заголовок"
+
+msgctxt "#30022"
+msgid "Previous"
+msgstr "Предыдущая"
+
+msgctxt "#30023"
+msgid "Next"
+msgstr "Следующая"
+
+msgctxt "#30024"
+msgid "Close"
+msgstr "Закрыть"
