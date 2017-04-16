@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.video.united.search" version="0.1.6" name="United Search" provider-name="vl.maksime">
+<addon id="plugin.video.united.search" version="0.2.0" name="United Search" provider-name="vl.maksime">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.simpleplugin" version="2.2.0"/>
@@ -28,12 +28,14 @@
         <forum>http://xbmc.ru/forum/showthread.php?t=14278</forum>
         <email>vl.maksime@gmail.com</email>
         <source>https://github.com/vlmaksime/plugin.video.united.search</source>
-        <news>v0.1.6 (2017-03-19)[CR]- В настройках добавлена возможность удалить из имени дополнения подстроку "(UnifiedSearch)"[CR]- Переделан алгоритм сортировки. Теперь результаты поиска, содержащии в названии полную строку поиска, будут расположены в начале списка[CR]- В результаты поиска добавлен пункт "Повторить поиск"[CR]- В настройках можно выбрать расположение названия дополнения.</news>
+        <news>v0.2.0 (2017-04-16)[CR]- Добавлено контекстное меню для выполнения поиска из других дополнений[CR]- Переделано окно включения/выключения совместимых дополнений</news>
         <assets>
             <icon>icon.png</icon>
             <screenshot>resources\media\screenshot-01.jpg</screenshot>
             <screenshot>resources\media\screenshot-02.jpg</screenshot>
             <screenshot>resources\media\screenshot-03.jpg</screenshot>
+            <screenshot>resources\media\screenshot-04.jpg</screenshot>
+            <screenshot>resources\media\screenshot-05.jpg</screenshot>
         </assets>
     </extension>
 </addon>
