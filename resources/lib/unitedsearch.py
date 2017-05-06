@@ -9,6 +9,7 @@ import xbmcplugin
 import urllib
 import simplejson as json
 import pyxbmct
+import threading
 
 import resources.lib.gui as gui
 
@@ -16,6 +17,11 @@ from simpleplugin import Plugin
 
 plugin = Plugin()
 _ = plugin.initialize_gettext()
+
+def _get_directory_threaded( us, directory ):
+    us.result = []
+    for item in us.get_directory(directory):
+        us.result.append(item)
 
 class UnitedSearch:
     def __init__( self ):
@@ -50,17 +56,21 @@ class UnitedSearch:
                     #succeeded = False
                     break
 
-                path = []
-                path.append('plugin://')
-                path.append(addon['id'])
-                path.append('/?usearch=True&')
-                path.append(addon['us_command'])
-                path.append(urllib.quote(keyword))
-
-                directory = ''.join(path)
-
                 addon_name = addon['name']
-                for file in self.__get_directory(directory):
+                if addon['learned']:
+                    directory_list = self.__get_learned_directory(addon['us_command'], keyword)
+                else:
+                    path = []
+                    path.append('plugin://')
+                    path.append(addon['id'])
+                    path.append('/?usearch=True&')
+                    path.append(addon['us_command'])
+                    path.append(urllib.quote(keyword))
+
+                    directory = ''.join(path)
+                    directory_list = self.get_directory(directory)
+                
+                for file in directory_list:
                     item_data = {'file': file,
                                  'addon_name': addon_name}
                     listing.append(item_data)
@@ -87,7 +97,7 @@ class UnitedSearch:
             url = plugin.get_url(action='search_results', item=0, update_listing=update_listing)
             xbmc.executebuiltin('Container.Update("%s")' % url)
 
-    def __get_directory( self, directory ):
+    def get_directory( self, directory ):
         request = {'jsonrpc': '2.0',
                    'method': 'Files.GetDirectory',
                    'params': {'properties': ['title', 'genre', 'year', 'rating', 'runtime', 'plot', 'file', 'art', 'sorttitle', 'originaltitle'],
@@ -103,6 +113,34 @@ class UnitedSearch:
             for file in result.get('files', []):
                 yield file
 
+    def __get_learned_directory( self, directory, keyword ):
+        t = threading.Thread(target=_get_directory_threaded, args = (self, directory))
+        t.start()
+        while True:
+            window_name = xbmc.getInfoLabel('Window.Property(xmlfile)')
+            plugin.log_debug('wnd name - ' + xbmc.getInfoLabel('Window.Property(name)'))
+            if window_name == 'DialogKeyboard.xml':
+                request = {'jsonrpc': '2.0',
+                           'method': 'Input.SendText',
+                           'params': {'text': keyword,
+                                      'done': True
+                                      },
+                           'id': 1
+                           }
+                response = xbmc.executeJSONRPC(json.dumps(request))
+                break
+            elif window_name == 'DialogSelect.xml':
+                request = {'jsonrpc': '2.0',
+                           'method': 'Input.Select',
+                           'id': 1
+                           }
+                response = xbmc.executeJSONRPC(json.dumps(request))
+                xbmc.sleep(100)
+
+        t.join(10)
+
+        return self.result
+                
     def search_results( self, params ):
 
         item = int(params.get('item', '0'))
@@ -215,19 +253,30 @@ class UnitedSearch:
         for addon in self.__get_video_addons():
             addon_object = xbmcaddon.Addon(addon['addonid'])
             united_search = addon_object.getSetting('united_search')
+            united_search_learned = addon_object.getSetting('united_search_learned')
+            use_us = (united_search or united_search_learned)
+            united_search_flag = False
+            learned_flag = False
             if united_search:
+                united_search_flag = (united_search == 'true')
                 us_command = addon_object.getSetting('us_command')
                 if not us_command:
                     us_command = 'mode=search&keyword='
-
+            elif united_search_learned:
+                learned_flag = True
+                united_search_flag = (united_search_learned == 'true')
+                us_command = addon_object.getSetting('usl_command')
+            
+            if use_us:
                 addon_name = addon['name']
                 if del_unified_name and addon_name.find('(UnifiedSearch)') > 0:
                     addon_name = addon_name.replace('(UnifiedSearch)','').strip()
 
-                addon_info = {'id':             addon['addonid'],
-                              'name':           addon_name,
-                              'us_command':     us_command,
-                              'united_search': (united_search == 'true')
+                addon_info = {'id':            addon['addonid'],
+                              'name':          addon_name,
+                              'us_command':    us_command,
+                              'united_search': united_search_flag,
+                              'learned':       learned_flag,
                               }
 
                 self.__supported_addons.append(addon_info)
@@ -260,3 +309,12 @@ class UnitedSearch:
 
     def get_supported_addons( self ):
         return self.__supported_addons
+        
+    def add_learned_addon( self, path ):
+        if path[0:9] == 'plugin://':
+            addonid = path[9:].split('/')[0]
+            addon_object = xbmcaddon.Addon(addonid)
+            addon_object.setSetting('united_search_learned', 'true')
+            addon_object.setSetting('usl_command', path)
+        else:
+            addon_id = ''

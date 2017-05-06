@@ -1,6 +1,6 @@
 # Kodi Media Center language file
-# Addon Name: Unified Search Lite
-# Addon id: plugin.video.unified.search.lite
+# Addon Name: United Search
+# Addon id: plugin.video.united.search
 # Addon Provider: vl.maksime
 
 msgid ""
@@ -109,3 +109,11 @@ msgstr "Следующая"
 msgctxt "#30024"
 msgid "Close"
 msgstr "Закрыть"
+
+msgctxt "#30025"
+msgid "Use for search"
+msgstr "Использовать для поиска"
+
+msgctxt "#30026"
+msgid "United Search"
+msgstr ""

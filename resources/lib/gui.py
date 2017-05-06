@@ -59,11 +59,14 @@ class SupportedAddonsSettings(pyxbmct.AddonDialogWindow):
             radiobutton = pyxbmct.RadioButton(addon['name'])
             self.placeControl(radiobutton, i, 0, 1, 4)
             addon_object = xbmcaddon.Addon(addon['id'])
-            united_search = (addon_object.getSetting('united_search') == 'true')
+            if addon['learned']:
+                united_search = (addon_object.getSetting('united_search_learned') == 'true')
+            else:
+                united_search = (addon_object.getSetting('united_search') == 'true')
             radiobutton.setSelected(united_search)
             self.connect(radiobutton, self.radio_update)
 
-            self.list.append({'btn': radiobutton, 'id': addon['id'], 'status': united_search})
+            self.list.append({'btn': radiobutton, 'id': addon['id'], 'status': united_search, 'learned': addon['learned']})
             if i >= 7: break
 
         self.vis_prev_btn = (self.page > 0)
@@ -110,7 +113,10 @@ class SupportedAddonsSettings(pyxbmct.AddonDialogWindow):
             if is_selected != item['status']:
                 item['status'] = is_selected
                 addon_object = xbmcaddon.Addon(item['id'])
-                addon_object.setSetting('united_search', 'true' if item['status'] else 'false')
+                if item['learned']:
+                    addon_object.setSetting('united_search_learned', 'true' if item['status'] else 'false')
+                else:
+                    addon_object.setSetting('united_search', 'true' if item['status'] else 'false')
 
     def next_page(self):
         self.page += 1

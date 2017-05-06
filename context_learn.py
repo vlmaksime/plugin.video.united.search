@@ -1,0 +1,19 @@
+﻿# -*- coding: utf-8 -*-
+# Module: context
+# License: GPL v.3 https://www.gnu.org/copyleft/gpl.html
+
+import xbmc
+
+from resources.lib.unitedsearch import UnitedSearch
+from resources.lib.unitedsearch import plugin
+
+_ = plugin.initialize_gettext()
+
+us = UnitedSearch()
+
+def main():
+    path = xbmc.getInfoLabel('ListItem.FileNameAndPath')
+    us.add_learned_addon(path)
+
+if __name__ == '__main__':
+    main()
