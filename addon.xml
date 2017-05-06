@@ -41,7 +41,7 @@
         <forum>http://xbmc.ru/forum/showthread.php?t=14278</forum>
         <email>vl.maksime@gmail.com</email>
         <source>https://github.com/vlmaksime/plugin.video.united.search</source>
-        <news>v0.2.0 (2017-04-16)[CR]- Добавлено контекстное меню для выполнения поиска из других дополнений[CR]- Переделано окно включения/выключения совместимых дополнений</news>
+        <news>v0.2.1 (2017-04-16)[CR]- Добавлена возможность выполнять поиск в дополнениях без встроенной поддержки</news>
         <assets>
             <icon>icon.png</icon>
             <screenshot>resources\media\screenshot-01.jpg</screenshot>
