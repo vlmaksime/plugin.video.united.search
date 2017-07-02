@@ -117,3 +117,19 @@ msgstr ""
 msgctxt "#30026"
 msgid "United Search"
 msgstr ""
+
+msgctxt "#30027"
+msgid "Addon has native support"
+msgstr ""
+
+msgctxt "#30028"
+msgid "Added search support"
+msgstr ""
+
+msgctxt "#30029"
+msgid "Missing keyboard call"
+msgstr ""
+
+msgctxt "#30030"
+msgid "This is not addon item"
+msgstr ""

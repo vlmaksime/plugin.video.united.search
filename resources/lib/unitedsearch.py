@@ -15,7 +15,7 @@ import gui
 
 from simpleplugin import Plugin
 
-plugin = Plugin()
+plugin = Plugin('plugin.video.united.search')
 _ = plugin.initialize_gettext()
 
 def _get_directory_threaded( us, directory ):

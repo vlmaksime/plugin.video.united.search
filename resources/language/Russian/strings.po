@@ -117,3 +117,19 @@ msgstr "Использовать для поиска"
 msgctxt "#30026"
 msgid "United Search"
 msgstr ""
+
+msgctxt "#30027"
+msgid "Addon has native support"
+msgstr "У дополнения есть встроенная поддержка"
+
+msgctxt "#30028"
+msgid "Added search support"
+msgstr "Добавлена поддержка поиска"
+
+msgctxt "#30029"
+msgid "Missing keyboard call"
+msgstr "Отсутствует вызов клавиатуры"
+
+msgctxt "#30030"
+msgid "This is not addon item"
+msgstr "Это не элемент дополнения"
