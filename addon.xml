@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.video.united.search" version="0.2.1" name="United Search" provider-name="vl.maksime">
+<addon id="plugin.video.united.search" version="0.2.2" name="United Search" provider-name="vl.maksime">
     <requires>
-        <import addon="xbmc.python" version="2.19.0"/>
+        <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.simpleplugin" version="2.2.0"/>
         <import addon="script.module.simplejson" version="3.3.0"/>
-        <import addon="script.module.pyxbmct" version="1.1.8" />
+        <import addon="script.module.pyxbmct" version="1.1.4" />
     </requires>
     <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video</provides>
@@ -28,6 +28,7 @@
             </menu>
         </menu>
     </extension>
+    <extension point="xbmc.python.module" library="resources\lib" />
     <extension point="xbmc.addon.metadata">
         <summary lang="en">Unified search for video add-ons</summary>
         <summary lang="ru">Единый поиск для видеодополнений</summary>
@@ -41,7 +42,7 @@
         <forum>http://xbmc.ru/forum/showthread.php?t=14278</forum>
         <email>vl.maksime@gmail.com</email>
         <source>https://github.com/vlmaksime/plugin.video.united.search</source>
-        <news>v0.2.1 (2017-04-16)[CR]- Добавлена возможность выполнять поиск в дополнениях без встроенной поддержки</news>
+        <news>v0.2.2 (2017-07-02)[CR]- Доработан механизм обучения и поиска в дополнениях без встроенной поддержки</news>
         <assets>
             <icon>icon.png</icon>
             <screenshot>resources\media\screenshot-01.jpg</screenshot>

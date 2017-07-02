@@ -1,11 +1,10 @@
 ﻿# -*- coding: utf-8 -*-
-# Module: context
+# Module: context_search
 # License: GPL v.3 https://www.gnu.org/copyleft/gpl.html
 
 import xbmc
 import xbmcgui
 import re
-import simplejson as json
 
 from resources.lib.unitedsearch import UnitedSearch
 from resources.lib.unitedsearch import plugin

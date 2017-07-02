@@ -1,5 +1,5 @@
 ﻿# -*- coding: utf-8 -*-
-# Module: context
+# Module: context_learn
 # License: GPL v.3 https://www.gnu.org/copyleft/gpl.html
 
 import xbmc

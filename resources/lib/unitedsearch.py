@@ -11,7 +11,7 @@ import simplejson as json
 import pyxbmct
 import threading
 
-import resources.lib.gui as gui
+import gui
 
 from simpleplugin import Plugin
 
@@ -116,27 +116,12 @@ class UnitedSearch:
     def __get_learned_directory( self, directory, keyword ):
         t = threading.Thread(target=_get_directory_threaded, args = (self, directory))
         t.start()
-        while True:
-            window_name = xbmc.getInfoLabel('Window.Property(xmlfile)')
-            plugin.log_debug('wnd name - ' + xbmc.getInfoLabel('Window.Property(name)'))
-            if window_name == 'DialogKeyboard.xml':
-                request = {'jsonrpc': '2.0',
-                           'method': 'Input.SendText',
-                           'params': {'text': keyword,
-                                      'done': True
-                                      },
-                           'id': 1
-                           }
-                response = xbmc.executeJSONRPC(json.dumps(request))
-                break
-            elif window_name == 'DialogSelect.xml':
-                request = {'jsonrpc': '2.0',
-                           'method': 'Input.Select',
-                           'id': 1
-                           }
-                response = xbmc.executeJSONRPC(json.dumps(request))
-                xbmc.sleep(100)
 
+        params = {'text': keyword,
+                  'done': True
+                  }
+        
+        self.__wait_keyboard(params)
         t.join(10)
 
         return self.result
@@ -314,7 +299,66 @@ class UnitedSearch:
         if path[0:9] == 'plugin://':
             addonid = path[9:].split('/')[0]
             addon_object = xbmcaddon.Addon(addonid)
-            addon_object.setSetting('united_search_learned', 'true')
-            addon_object.setSetting('usl_command', path)
+            united_search = addon_object.getSetting('united_search')
+            plugin.log_error(united_search)
+            if united_search in ['true','false']:
+                self.__show_notification(_('Addon has native support'))
+            elif self.__sheck_learned_directory(path):
+                addon_object.setSetting('united_search_learned', 'true')
+                addon_object.setSetting('usl_command', path)
+                self.__show_notification(_('Added search support'))
+            else:
+                self.__show_notification(_('Missing keyboard call'))
         else:
-            addon_id = ''
+            self.__show_notification(_('This is not addon item'))
+            
+    def __wait_keyboard(self, params):
+
+        count = 0
+        max_count = 50
+        sleep_time = 100
+        wait_keyboard = True
+
+        while wait_keyboard and count <= max_count:
+            window_name = xbmc.getInfoLabel('Window.Property(xmlfile)')
+            request = None
+            if window_name == 'DialogKeyboard.xml':
+                wait_keyboard = False
+                if params['done']:
+                    request = {'jsonrpc': '2.0',
+                               'method': 'Input.SendText',
+                               'params': params,
+                               'id': 1
+                               }
+                else:
+                    request = {'jsonrpc': '2.0',
+                               'method': 'Input.Back',
+                               'id': 1
+                               }
+                    
+
+            elif window_name == 'DialogSelect.xml':
+                request = {'jsonrpc': '2.0',
+                           'method': 'Input.Select',
+                           'id': 1
+                           }
+
+            response = xbmc.executeJSONRPC(json.dumps(request))
+            count += 1
+            xbmc.sleep(sleep_time)
+            
+        return not wait_keyboard
+
+    def __sheck_learned_directory( self, directory ):
+        t = threading.Thread(target=_get_directory_threaded, args = (self, directory))
+        t.start()
+
+        params = {'text': '',
+                  'done': False
+                  }
+        
+        result = self.__wait_keyboard(params)
+        t.join(10)
+
+        return result
+                
