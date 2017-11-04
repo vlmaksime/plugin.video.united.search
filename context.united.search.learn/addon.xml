@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<addon id="context.united.search.learn" version="0.1.1" name="United Search Learn" provider-name="vl.maksime">
+    <requires>
+        <import addon="plugin.video.united.search" version="0.2.2"/>
+    </requires>
+    <extension point="kodi.context.item" library="context_learn.py">
+        <item>
+            <label>30025</label>
+            <visible>true</visible>
+        </item>
+     </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en"></summary>
+        <summary lang="ru"></summary>
+        <description lang="en">Additional item of the context menu. Allows you to add search support for United Search add-on[CR]Intended for KODI 15.x</description>
+        <description lang="ru">Дополнительный пункт контекстного меню. Позволяет добавит поддержку поиска из дополнения United Search[CR]Предназначен для KODI 15.x</description>
+        <disclaimer lang="en"></disclaimer>
+        <disclaimer lang="ru"></disclaimer>
+        <language></language>
+        <platform>all</platform>
+        <license>GNU GENERAL PUBLIC LICENSE. Version 3, 29 June 2007</license>
+        <forum>http://xbmc.ru/forum/showthread.php?t=14278</forum>
+        <email>vl.maksime@gmail.com</email>
+        <source></source>
+        <news>v0.1.1 (2017-07-02)[CR]- Публичный релиз</news>
+        <assets>
+            <icon>icon.png</icon>
+        </assets>
+    </extension>
+</addon>
