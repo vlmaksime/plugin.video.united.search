@@ -1,32 +1,12 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.video.united.search" version="0.2.2" name="United Search" provider-name="vl.maksime">
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="plugin.video.united.search" version="0.2.3" name="United Search" provider-name="vl.maksime">
     <requires>
         <import addon="xbmc.python" version="2.19.0"/>
         <import addon="script.module.simpleplugin" version="2.2.0"/>
-        <import addon="script.module.simplejson" version="3.3.0"/>
         <import addon="script.module.pyxbmct" version="1.1.8" />
     </requires>
     <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video</provides>
-    </extension>
-    <extension point="kodi.context.item" library="context_search.py">
-        <item>
-            <label>30018</label>
-            <visible>true</visible>
-        </item>
-        <menu id="kodi.core.main">
-            <item library="context_search.py">
-                <label>30018</label>
-                <visible>true</visible>
-            </item>
-            <menu>
-                <label>30026</label>
-                <item library="context_learn.py">
-                    <label>30025</label>
-                    <visible>true</visible>
-                </item>
-            </menu>
-        </menu>
     </extension>
     <extension point="xbmc.python.module" library="resources\lib" />
     <extension point="xbmc.addon.metadata">
@@ -42,7 +22,7 @@
         <forum>http://xbmc.ru/forum/showthread.php?t=14278</forum>
         <email>vl.maksime@gmail.com</email>
         <source>https://github.com/vlmaksime/plugin.video.united.search</source>
-        <news>v0.2.2 (2017-07-02)[CR]- Доработан механизм обучения и поиска в дополнениях без встроенной поддержки</news>
+        <news>v0.2.3 (2018-10-07)[CR]- Пункты контекстного меню вынесены в отдельные дополнения[CR][CR]v0.2.2 (2017-07-02)[CR]- Доработан механизм обучения и поиска в дополнениях без встроенной поддержки</news>
         <assets>
             <icon>icon.png</icon>
             <screenshot>resources\media\screenshot-01.jpg</screenshot>

@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Module: gui
 # License: GPL v.3 https://www.gnu.org/copyleft/gpl.html
 
@@ -85,27 +85,29 @@ class SupportedAddonsSettings(pyxbmct.AddonDialogWindow):
 
     def set_page_navigation(self):
         list_len = len(self.list)
-        for i in range(list_len):
-            cur_btn = self.list[i]['btn']
-            if i == 0:
-                self.setFocus(cur_btn)
-            if i > 0:
-                cur_btn.controlUp(self.list[i-1]['btn'])
-            if i < (list_len-1):
-                cur_btn.controlDown(self.list[i+1]['btn'])
-        last_btn = self.list[list_len-1]['btn']
+        if list_len > 0:
+            for i in range(list_len):
+                cur_btn = self.list[i]['btn']
+                if i == 0:
+                    self.setFocus(cur_btn)
+                if i > 0:
+                    cur_btn.controlUp(self.list[i-1]['btn'])
+                if i < (list_len-1):
+                    cur_btn.controlDown(self.list[i+1]['btn'])
+            last_btn = self.list[list_len-1]['btn']
         
-        self.button_prev.controlUp(last_btn)
-        self.button_next.controlUp(last_btn)
-        self.button_close.controlUp(last_btn)
+            self.button_prev.controlUp(last_btn)
+            self.button_next.controlUp(last_btn)
+            self.button_close.controlUp(last_btn)
 
-        if self.vis_next_btn:
-            last_btn.controlDown(self.button_next)
-        elif self.vis_prev_btn:
-            last_btn.controlDown(self.button_prev)
-        else:    
-            last_btn.controlDown(self.button_close)
-
+            if self.vis_next_btn:
+                last_btn.controlDown(self.button_next)
+            elif self.vis_prev_btn:
+                last_btn.controlDown(self.button_prev)
+            else:    
+                last_btn.controlDown(self.button_close)
+        else:
+            self.setFocus(self.button_close)
 
     def radio_update(self):
         for item in self.list:

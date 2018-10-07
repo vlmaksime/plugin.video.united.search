@@ -8,16 +8,16 @@ msgstr ""
 
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru\n"
+"Language: en\n"
 
 msgctxt "#30001"
 msgid "United Search"
 msgstr ""
 
 msgctxt "#30002"
-msgid "Use for search"
-msgstr "Использовать для поиска"
+msgid "Search..."
+msgstr ""
 
 msgctxt "#30003"
-msgid "Use for search in United Search"
-msgstr "Использовать для поиска в United Search"
+msgid "Search in United Search..."
+msgstr ""

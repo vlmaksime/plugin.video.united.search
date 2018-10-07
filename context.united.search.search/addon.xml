@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<addon id="context.united.search.learn" version="0.1.2" name="United Search Context: Learn" provider-name="vl.maksime">
+<addon id="context.united.search.search" version="0.1.1" name="United Search Context: Search" provider-name="vl.maksime">
     <requires>
         <import addon="plugin.video.united.search" version="0.2.2"/>
     </requires>
-    <extension point="kodi.context.item" library="context_learn.py">
+    <extension point="kodi.context.item" library="context_search.py">
         <item>
             <label>30003</label>
             <visible>true</visible>
         </item>
         <menu id="kodi.core.main">
-            <menu id="context.united.search">
+             <menu id="context.united.search">
                 <label>30001</label>
-                <item library="context_learn.py">
+               <item library="context_search.py">
                     <label>30002</label>
                     <visible>true</visible>
                 </item>

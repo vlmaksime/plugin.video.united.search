@@ -4,8 +4,7 @@
 
 import xbmc
 
-from unitedsearch import UnitedSearch
-from unitedsearch import plugin
+from unitedsearch import UnitedSearch, plugin
 
 _ = plugin.initialize_gettext()
 
