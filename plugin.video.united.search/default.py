@@ -15,7 +15,7 @@ def root( params ):
     return plugin.create_listing(__list_root(), content='files')
 
 def __list_root():
-    items = [ {'action': 'search',           'label': _('New Search')},
+    items = [ {'action': 'search',           'label': _('New Search'), 'is_folder': False},
               {'action': 'search_results',   'label': _('Last Search')},
               {'action': 'search_history',   'label': _('Search History')},
               {'action': 'supported_addons', 'label': _('Supported Add-ons'), 'is_folder': False}]
