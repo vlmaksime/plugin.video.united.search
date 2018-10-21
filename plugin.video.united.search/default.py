@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Module: default
 # License: GPL v.3 https://www.gnu.org/copyleft/gpl.html
 
@@ -15,7 +15,7 @@ def root( params ):
     return plugin.create_listing(__list_root(), content='files')
 
 def __list_root():
-    items = [ {'action': 'search',           'label': _('New Search')},
+    items = [ {'action': 'search',           'label': _('New Search'), 'is_folder': False},
               {'action': 'search_results',   'label': _('Last Search')},
               {'action': 'search_history',   'label': _('Search History')},
               {'action': 'supported_addons', 'label': _('Supported Add-ons'), 'is_folder': False}]

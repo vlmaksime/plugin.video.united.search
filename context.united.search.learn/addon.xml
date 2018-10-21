@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<addon id="context.united.search.learn" version="0.1.2" name="United Search Context: Learn" provider-name="vl.maksime">
+    <requires>
+        <import addon="plugin.video.united.search" version="0.2.2"/>
+    </requires>
+    <extension point="kodi.context.item" library="context_learn.py">
+        <item>
+            <label>30003</label>
+            <visible>true</visible>
+        </item>
+        <menu id="kodi.core.main">
+            <menu id="context.united.search">
+                <label>30001</label>
+                <item library="context_learn.py">
+                    <label>30002</label>
+                    <visible>true</visible>
+                </item>
+            </menu>
+        </menu>
+    </extension>
+
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en"></summary>
+        <summary lang="ru"></summary>
+        <description lang="en"></description>
+        <description lang="ru"></description>
+        <disclaimer lang="en"></disclaimer>
+        <disclaimer lang="ru"></disclaimer>
+        <language></language>
+        <platform>all</platform>
+        <license>GNU GENERAL PUBLIC LICENSE. Version 3, 29 June 2007</license>
+        <forum>http://xbmc.ru/forum/showthread.php?t=14278</forum>
+        <email>vl.maksime@gmail.com</email>
+        <source></source>
+        <news></news>
+        <assets>
+            <icon>icon.png</icon>
+        </assets>
+    </extension>
+</addon>

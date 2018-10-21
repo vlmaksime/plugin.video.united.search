@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Module: unitedsearch
 # License: GPL v.3 https://www.gnu.org/copyleft/gpl.html
 
@@ -7,7 +7,7 @@ import xbmcgui
 import xbmcaddon
 import xbmcplugin
 import urllib
-import simplejson as json
+import json
 import pyxbmct
 import threading
 

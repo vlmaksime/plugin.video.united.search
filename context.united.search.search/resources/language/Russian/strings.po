@@ -1,0 +1,23 @@
+# Kodi Media Center language file
+# Addon Name: United Search
+# Addon id: plugin.video.united.search
+# Addon Provider: vl.maksime
+
+msgid ""
+msgstr ""
+
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+
+msgctxt "#30001"
+msgid "United Search"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Search..."
+msgstr "Искать..."
+
+msgctxt "#30003"
+msgid "Search in United Search..."
+msgstr "Искать в United Search..."
