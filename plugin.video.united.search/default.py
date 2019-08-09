@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Module: default
 # License: GPL v.3 https://www.gnu.org/copyleft/gpl.html
 
 import resources.lib.gui as gui
