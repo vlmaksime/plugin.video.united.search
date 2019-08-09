@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Module: unitedsearch
 # License: GPL v.3 https://www.gnu.org/copyleft/gpl.html
 
 import xbmc
@@ -23,7 +22,7 @@ def _get_directory_threaded( us, directory ):
     for item in us.get_directory(directory):
         us.result.append(item)
 
-class UnitedSearch:
+class UnitedSearch(object):
     def __init__( self ):
         self.__load_supported_addons()
 
@@ -54,20 +53,20 @@ class UnitedSearch:
                 progress.update(100 * i / total_addons, line2=addon['name'], line3=result_string)
                 if (progress.iscanceled()):
                     #succeeded = False
-                    break
+                    return
 
                 addon_name = addon['name']
                 if addon['learned']:
                     directory_list = self.__get_learned_directory(addon['us_command'], keyword)
                 else:
-                    path = []
-                    path.append('plugin://')
-                    path.append(addon['id'])
-                    path.append('/?usearch=True&')
-                    path.append(addon['us_command'])
-                    path.append(urllib.quote(keyword))
+                    us_command = addon['us_command']
+                    if us_command.find('?')>=0:
+                        path_tpl = 'plugin://{0}/{1}{2}&usearch=True'
+                    else:
+                        path_tpl = 'plugin://{0}/?{1}{2}&usearch=True'
+                        
+                    directory = path_tpl.format(addon['id'], us_command, urllib.quote(keyword))
 
-                    directory = ''.join(path)
                     directory_list = self.get_directory(directory)
                 
                 for file in directory_list:
