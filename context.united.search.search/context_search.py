@@ -42,8 +42,9 @@ def main():
         else:
             keyword = ''
 
+    cont_edit_keyword = plugin.get_setting('cont_edit_keyword')
 
-    if keyword and plugin.cont_edit_keyword:
+    if keyword and cont_edit_keyword:
         kbd = xbmc.Keyboard()
         kbd.setDefault(keyword)
         kbd.setHeading(_('Search'))

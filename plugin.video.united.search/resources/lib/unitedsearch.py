@@ -1,18 +1,24 @@
 # -*- coding: utf-8 -*-
 # License: GPL v.3 https://www.gnu.org/copyleft/gpl.html
 
+from __future__ import unicode_literals
+from future.utils import PY2, PY3
+
 import xbmc
 import xbmcgui
 import xbmcaddon
 import xbmcplugin
-import urllib
 import json
 import pyxbmct
 import threading
 
-import gui
+if PY3:
+    from urllib.parse import quote
+else:
+    from future.backports.urllib.parse import quote
 
-from simpleplugin import Plugin
+
+from simplemedia import Plugin, py2_decode, py2_encode
 
 plugin = Plugin('plugin.video.united.search')
 _ = plugin.initialize_gettext()
@@ -38,6 +44,8 @@ class UnitedSearch(object):
             kbd.doModal()
             if kbd.isConfirmed():
                 keyword = kbd.getText()
+        else:
+            keyword = py2_encode(keyword)
 
         if keyword:
             succeeded = True
@@ -46,11 +54,10 @@ class UnitedSearch(object):
             enabled_addons = self.__get_enabled_addons()
             total_addons = len(enabled_addons)
 
-            progress = xbmcgui.DialogProgress()
-            progress.create(_('Search'), _('Please wait. Searching...'))
+            progress = plugin.dialog_progress_create(_('Search'), _('Please wait. Searching...'))
             for i, addon in enumerate(enabled_addons):
                 result_string = '%s: %d' % (_('Search results'), len(listing))
-                progress.update(100 * i / total_addons, line2=addon['name'], line3=result_string)
+                plugin.dialog_progress_update(progress,int(100 * i / total_addons), line2=addon['name'], line3=result_string)
                 if (progress.iscanceled()):
                     #succeeded = False
                     return
@@ -65,7 +72,7 @@ class UnitedSearch(object):
                     else:
                         path_tpl = 'plugin://{0}/?{1}{2}&usearch=True'
                         
-                    directory = path_tpl.format(addon['id'], us_command, urllib.quote(keyword))
+                    directory = path_tpl.format(addon['id'], us_command, quote(keyword))
 
                     directory_list = self.get_directory(directory)
                 
@@ -77,13 +84,15 @@ class UnitedSearch(object):
             progress.close()
 
             if succeeded:
+                history_length = plugin.get_setting('history_length')
+
                 with plugin.get_storage('__history__.pcl') as storage:
                     history = storage.get('history', [])
 
-                    item_content = {'keyword': keyword.decode('utf-8'), 'listing': listing}
+                    item_content = {'keyword': py2_decode(keyword), 'listing': listing}
                     history.insert(0, item_content)
 
-                    if len(history) > plugin.history_length:
+                    if len(history) > history_length:
                         history.pop(-1)
                     storage['history'] = history
 
@@ -141,11 +150,11 @@ class UnitedSearch(object):
             listing = []
             keyword = ''
 
-        return plugin.create_listing(self.__list_serach_result(keyword, listing), content='movies', update_listing=update_listing, sort_methods=[27], category=keyword)
+        plugin.create_directory(self.__list_serach_result(keyword, listing), content='movies', update_listing=update_listing, sort_methods=[27], category=keyword)
 
     def __list_serach_result( self, keyword, video_list ):
         if keyword:
-            url = plugin.get_url(action='search', update_listing=True, keyword=keyword.encode('utf-8'))
+            url = plugin.get_url(action='search', update_listing=True, keyword=keyword)
             list_item = {'label':       _('Repeat Search'),
                          'info':        { 'video': {'sorttitle': '!*_repeat_search'} },
                          'is_folder':   False,
@@ -174,15 +183,19 @@ class UnitedSearch(object):
         if keyword and (keyword.lower() in sorttitle.lower() or originaltitle and keyword.lower() in originaltitle.lower()):
             sorttitle = '*' + sorttitle
 
+        add_name_lable = plugin.get_setting('add_name_lable')
+        add_name_lable_position = plugin.get_setting('add_name_lable_position')
+        add_name_plot = plugin.get_setting('add_name_plot')
+
         label = video_item['label'].strip()
-        if plugin.add_name_lable:
-            if plugin.add_name_lable_position == 0:
+        if add_name_lable:
+            if add_name_lable_position == 0:
                 label = '[%s] %s' % (addon_name, label)
             else:
                 label = '%s [%s]' % (label, addon_name)
 
         plot = video_item.get('plot')
-        if plugin.add_name_plot:
+        if add_name_plot:
             if plot:
                 plot = '[B]%s[/B]\n\n%s' % (addon_name, plot)
             else:
@@ -207,10 +220,10 @@ class UnitedSearch(object):
         return item_info
 
     def search_history( self, params ):
-        return plugin.create_listing(self.__list_search_history(), content='files', category=_('Search History'))
+        plugin.create_directory(self.__list_search_history(), content='files', category=_('Search History'))
 
     def __list_search_history( self ):
-        history_length = plugin.history_length
+        history_length = plugin.get_setting('history_length')
 
         with plugin.get_storage('__history__.pcl') as storage:
             history = storage.get('history', [])
@@ -230,7 +243,7 @@ class UnitedSearch(object):
         xbmcgui.Dialog().notification(plugin.addon.getAddonInfo('name'), text)
 
     def __load_supported_addons( self ):
-        del_unified_name = plugin.del_unified_name
+        del_unified_name = plugin.get_setting('del_unified_name')
 
         self.__supported_addons = []
 
@@ -302,7 +315,7 @@ class UnitedSearch(object):
             plugin.log_error(united_search)
             if united_search in ['true','false']:
                 self.__show_notification(_('Addon has native support'))
-            elif self.__sheck_learned_directory(path):
+            elif self.__check_learned_directory(path):
                 addon_object.setSetting('united_search_learned', 'true')
                 addon_object.setSetting('usl_command', path)
                 self.__show_notification(_('Added search support'))
@@ -348,7 +361,7 @@ class UnitedSearch(object):
             
         return not wait_keyboard
 
-    def __sheck_learned_directory( self, directory ):
+    def __check_learned_directory( self, directory ):
         t = threading.Thread(target=_get_directory_threaded, args = (self, directory))
         t.start()
 
