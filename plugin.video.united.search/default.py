@@ -11,7 +11,7 @@ us = UnitedSearch()
 
 @plugin.action()
 def root( params ):
-    return plugin.create_listing(__list_root(), content='files')
+    plugin.create_directory(__list_root(), content='files')
 
 def __list_root():
     items = [ {'action': 'search',           'label': _('New Search'), 'is_folder': False},

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<addon id="context.united.search.search" version="0.1.1" name="United Search Context: Search" provider-name="vl.maksime">
+<addon id="context.united.search.search" version="0.1.2" name="United Search Context: Search" provider-name="vl.maksime">
     <requires>
         <import addon="plugin.video.united.search" version="0.2.2"/>
     </requires>
