@@ -27,14 +27,6 @@ def _get_directory_threaded( us, directory ):
     us.result = []
     for item in us.get_directory(directory):
         us.result.append(item)
-        
-def is_rtl(string):
-    if any([(ord(char) >= 1424 and ord(char) <= 1514) for char in string]) or \
-       any([(ord(char) >= 64285 and ord(char) <= 64335) for char in string]) or \
-       any([(ord(char) >= 64336 and ord(char) <= 65023) for char in string]) or \
-       any([(ord(char) >= 1536 and ord(char) <= 1791) for char in string]) or \
-       any([(ord(char) >= 65136 and ord(char) <= 65279) for char in string]):
-           return True
  
 class UnitedSearch(object):
     def __init__( self ):
@@ -130,8 +122,6 @@ class UnitedSearch(object):
                 yield file
 
     def __get_learned_directory( self, directory, keyword ):
-        if is_rtl(keyword.decode('utf-8')):
-            keyword = keyword.decode('utf-8')[::-1]
         t = threading.Thread(target=_get_directory_threaded, args = (self, directory))
         t.start()
 
