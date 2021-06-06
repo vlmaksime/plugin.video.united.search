@@ -130,7 +130,7 @@ class UnitedSearch(object):
                 yield file
 
     def __get_learned_directory( self, directory, keyword ):
-        if is_rtl(keyword.decode('utf-8')):
+        if PY2 and is_rtl(keyword.decode('utf-8')):
             keyword = keyword.decode('utf-8')[::-1]
         t = threading.Thread(target=_get_directory_threaded, args = (self, directory))
         t.start()
